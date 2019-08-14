@@ -1,19 +1,3 @@
-/*
- * Copyright 2018, The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.blkxltng.trackmysleep.sleepquality
 
 import android.os.Bundle
@@ -29,19 +13,8 @@ import com.blkxltng.trackmysleep.R
 import com.blkxltng.trackmysleep.database.SleepDatabase
 import com.blkxltng.trackmysleep.databinding.FragmentSleepQualityBinding
 
-/**
- * Fragment that displays a list of clickable icons,
- * each representing a sleep quality rating.
- * Once the user taps an icon, the quality is set in the current sleepNight
- * and the database is updated.
- */
 class SleepQualityFragment : Fragment() {
 
-    /**
-     * Called when the Fragment is ready to display content to the screen.
-     *
-     * This function uses DataBindingUtil to inflate R.layout.fragment_sleep_quality.
-     */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -55,6 +28,9 @@ class SleepQualityFragment : Fragment() {
         val viewModelFactory = SleepQualityViewModelFactory(arguments.sleepNightKey, dataSource)
         val sleepQualityViewModel = ViewModelProviders.of(
                         this, viewModelFactory).get(SleepQualityViewModel::class.java)
+
+        binding.sleepQualityViewModel = sleepQualityViewModel
+
         sleepQualityViewModel.navigateToSleepTracker.observe(this,  Observer {
             if (it == true) { // Observed state is true.
                 this.findNavController().navigate(
@@ -62,8 +38,6 @@ class SleepQualityFragment : Fragment() {
                 sleepQualityViewModel.doneNavigating()
             }
         })
-
-        binding.sleepQualityViewModel = sleepQualityViewModel
 
         return binding.root
     }
